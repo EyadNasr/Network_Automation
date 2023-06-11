@@ -1,0 +1,9 @@
+{% for ospfcfg in config.OSPF_Config -%}
+ospf {{ ospfcfg.OSPF_ProcessID }} router-id {{ ospfcfg.OSPF_RouterID }}
+{% for area in ospfcfg.OSPF_Areas -%}
+area {{ area.Area_Number }}
+{% for net in area.Enabled_Networks -%}
+network {{ net.IP_address }} {{ net.Wildcard }}
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}

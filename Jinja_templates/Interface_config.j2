@@ -1,0 +1,14 @@
+{% for interface in config.Interfaces -%}
+interface {{ interface.interfaceNameNumber }}
+{% if interface.VRF_Name is defined and interface.VRF_Name != "" -%}
+ip binding vpn-instance {{ interface.VRF_Name }}
+{% endif -%}
+ip address {{ interface.interfaceIP }} {{ interface.intMaskLength }}
+{% if interface.description is defined and interface.description != "" -%}
+description {{ interface.description }}
+{% if interface.MPLS_IntConf is defined and interface.MPLS_IntConf == "True" -%}
+mpls
+mpls ldp
+{% endif -%}
+{% endif -%}
+{% endfor -%}

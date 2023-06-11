@@ -1,0 +1,30 @@
+bgp {{ config.BGP_Config[0].BGP_LocalAS }}
+{% for bgp_conf in config.BGP_Config[0].CONFIG -%}
+{% if bgp_conf.VRF_Name is defined and bgp_conf.VRF_Name != "" -%}
+ipv4-family vpn-instance {{ bgp_conf.VRF_Name }}
+{% endif -%}
+router-id {{ bgp_conf.BGP_RouterID }}
+{% for peer in bgp_conf.Peers -%}
+peer {{ peer.BGP_PeerIP }} as-number {{ peer.BGP_PeerAS }}
+{% if config.BGP_Config[0].BGP_LocalAS != peer.BGP_PeerAS -%}
+peer {{ peer.BGP_PeerIP }} ebgp-max-hop {{ peer.BGP_MaxTTL }}
+{% endif -%}
+{% if peer.BGP_SourceInterface is defined and peer.BGP_SourceInterface != "" -%}
+peer {{ peer.BGP_PeerIP }} connect-interface {{ peer.BGP_SourceInterface }}
+{% endif -%}
+{% if peer.AF_Type is defined and peer.AF_Type != "" -%}
+ipv4-family {{peer.AF_Type}}
+peer {{ peer.BGP_PeerIP }} enable
+{% endif -%}
+{% if peer.Allow_as_loop is defined and peer.Allow_as_loop == "True" -%}
+peer {{ peer.BGP_PeerIP }} allow-as-loop
+{% endif -%}
+{% endfor -%}
+{% if bgp_conf.BGP_AdvertisedNetworks is defined and bgp_conf.BGP_AdvertisedNetworks != [] -%}
+{% for network in bgp_conf.BGP_AdvertisedNetworks -%}
+{% if network.NetworkIP is defined and network.NetworkMaskLength is defined and network.NetworkIP != "" and network.NetworkMaskLength != "" -%}
+network {{ network.NetworkIP }} {{ network.NetworkMaskLength }}
+{% endif -%}
+{% endfor -%}
+{% endif -%}
+{% endfor -%}

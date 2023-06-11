@@ -1,0 +1,14 @@
+{% for vrf in config.VRFs -%}
+ip vpn-instance {{ vrf.VRF_Name }}
+route-distinguisher {{ vrf.RD }}
+{% if vrf.IRT == vrf.ERT and vrf.IRT != "" -%}
+vpn-target {{ vrf.IRT }} both
+{% else -%}
+{% if vrf.ERT is defined and vrf.ERT != "" -%}
+vpn-target {{ vrf.ERT }} export-extcommunity
+{% endif -%}
+{% if vrf.IRT is defined and vrf.IRT != "" -%}
+vpn-target {{ vrf.IRT }} import-extcommunity
+{% endif -%}
+{% endif -%}
+{% endfor -%}

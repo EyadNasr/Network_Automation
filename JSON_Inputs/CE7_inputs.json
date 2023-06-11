@@ -1,0 +1,83 @@
+{
+  "Sysname": "Hub_CE7",
+  "Interfaces":
+  [
+    {
+      "interfaceNameNumber": "g0/0/1",
+      "interfaceIP": "10.0.67.7",
+      "intMaskLength": "24",
+      "description": "--connected to PE6 VPN_Out VRF",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "g0/0/2",
+      "interfaceIP": "10.0.76.7",
+      "intMaskLength": "24",
+      "description": "--connected to PE6 VPN_In VRF",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "Loopback0",
+      "interfaceIP": "7.7.7.7",
+      "intMaskLength": "32",
+      "description": "--Source EBGP interface and EBGP Router ID",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    }
+  ],
+  "BGP_Config":
+  [
+    {
+      "BGP_LocalAS": "300",
+      "CONFIG":
+      [
+        {
+          "BGP_RouterID": "7.7.7.7",
+          "Peers":
+          [
+            {
+              "BGP_PeerIP": "6.6.6.7",
+              "BGP_PeerAS": "123",
+              "BGP_MaxTTL": "2",
+              "BGP_SourceInterface": "Loopback0",
+              "Allow_as_loop": "False",
+              "AF_Type": ""
+            },
+            {
+              "BGP_PeerIP": "6.6.6.8",
+              "BGP_PeerAS": "123",
+              "BGP_MaxTTL": "2",
+              "BGP_SourceInterface": "Loopback0",
+              "Allow_as_loop": "False",
+              "AF_Type": ""
+            }
+          ],
+          "BGP_AdvertisedNetworks":
+          [
+            {
+              "NetworkIP": "",
+              "NetworkMaskLength": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Static_Routing":
+  [
+    {
+      "Destination_Network": "6.6.6.7",
+      "MaskLength": "32",
+      "NextHop": "10.0.76.6",
+      "VRF_Name": ""
+    },
+    {
+      "Destination_Network": "6.6.6.8",
+      "MaskLength": "32",
+      "NextHop": "10.0.67.6",
+      "VRF_Name": ""
+    }
+  ]
+}

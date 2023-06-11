@@ -1,0 +1,6 @@
+sysname {{ config.Sysname }}
+mpls lsr-id {{ config.MPLS_Conf[0].LSR_ID }}
+mpls
+mpls ldp
+{% include "Interface_config.j2" -%}
+{% include "OSPF_Config.j2" -%}

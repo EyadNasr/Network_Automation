@@ -1,0 +1,196 @@
+{
+  "Sysname": "Hub_PE6",
+  "VRFs":
+  [
+    {
+      "VRF_Name": "VPN_In",
+      "RD": "400:1",
+      "IRT": "100:1 200:1",
+      "ERT": ""
+    },
+    {
+      "VRF_Name": "VPN_Out",
+      "RD": "300:1",
+      "IRT": "",
+      "ERT": "300:1"
+    }
+  ],
+  "MPLS_Conf":
+  [
+    {
+      "LSR_ID": "6.6.6.6"
+    }
+  ],
+  "Interfaces":
+  [
+    {
+      "interfaceNameNumber": "g0/0/0",
+      "interfaceIP": "10.0.56.6",
+      "intMaskLength": "24",
+      "description": "--connected to P5",
+      "MPLS_IntConf": "True",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "g0/0/1",
+      "interfaceIP": "10.0.67.6",
+      "intMaskLength": "24",
+      "description": "--connected to CE7 through VPN_Out VRF",
+      "MPLS_IntConf": "False",
+      "VRF_Name": "VPN_Out"
+    },
+    {
+      "interfaceNameNumber": "g0/0/2",
+      "interfaceIP": "10.0.76.6",
+      "intMaskLength": "24",
+      "description": "--connected to CE7 through VPN_In VRF",
+      "MPLS_IntConf": "False",
+      "VRF_Name": "VPN_In"
+    },
+    {
+      "interfaceNameNumber": "Loopback0",
+      "interfaceIP": "6.6.6.6",
+      "intMaskLength": "32",
+      "description": "--OSPF Router-ID & MPLS-LDP LSR-ID & MP-BGP Router-ID",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "Loopback1",
+      "interfaceIP": "6.6.6.7",
+      "intMaskLength": "32",
+      "description": "--Source VPN_In EBGP interface and EBGP Router ID",
+      "MPLS_IntConf": "False",
+      "VRF_Name": "VPN_In"
+    },
+    {
+      "interfaceNameNumber": "Loopback2",
+      "interfaceIP": "6.6.6.8",
+      "intMaskLength": "32",
+      "description": "--Source VPN_Out EBGP interface and EBGP Router ID",
+      "MPLS_IntConf": "False",
+      "VRF_Name": "VPN_Out"
+    }
+  ],
+  "BGP_Config":
+  [
+    {
+      "BGP_LocalAS": "123",
+      "CONFIG":
+      [
+        {
+          "BGP_RouterID": "6.6.6.6",
+          "Peers":
+          [
+            {
+              "BGP_PeerIP": "3.3.3.3",
+              "BGP_PeerAS": "123",
+              "BGP_MaxTTL": "",
+              "BGP_SourceInterface": "Loopback0",
+              "Allow_as_loop": "False",
+              "AF_Type": "vpnv4"
+            },
+            {
+              "BGP_PeerIP": "4.4.4.4",
+              "BGP_PeerAS": "123",
+              "BGP_MaxTTL": "",
+              "BGP_SourceInterface": "Loopback0",
+              "Allow_as_loop": "False",
+              "AF_Type": "vpnv4"
+            }
+          ],
+          "BGP_AdvertisedNetworks":
+          [
+            {
+              "NetworkIP": "",
+              "NetworkMaskLength": ""
+            }
+          ]
+        },
+        {
+          "VRF_Name": "VPN_In",
+          "BGP_RouterID": "6.6.6.7",
+          "Peers":
+          [
+            {
+              "BGP_PeerIP": "7.7.7.7",
+              "BGP_PeerAS": "300",
+              "BGP_MaxTTL": "2",
+              "BGP_SourceInterface": "Loopback1",
+              "Allow_as_loop": "False",
+              "AF_Type": ""
+            }
+          ],
+          "BGP_AdvertisedNetworks":
+          [
+            {
+              "NetworkIP": "",
+              "NetworkMaskLength": ""
+            }
+          ]
+        },
+        {
+          "VRF_Name": "VPN_Out",
+          "BGP_RouterID": "6.6.6.8",
+          "Peers":
+          [
+            {
+              "BGP_PeerIP": "7.7.7.7",
+              "BGP_PeerAS": "300",
+              "BGP_MaxTTL": "2",
+              "BGP_SourceInterface": "Loopback2",
+              "Allow_as_loop": "True",
+              "AF_Type": ""
+            }
+          ],
+          "BGP_AdvertisedNetworks":
+          [
+            {
+              "NetworkIP": "",
+              "NetworkMaskLength": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "OSPF_Config":
+  [
+    {
+      "OSPF_ProcessID": "1",
+      "OSPF_RouterID": "6.6.6.6",
+      "OSPF_Areas":
+      [
+        {
+          "Area_Number": "0",
+          "Enabled_Networks":
+          [
+            {
+              "IP_address": "6.6.6.6",
+              "Wildcard": "0.0.0.0"
+            },
+            {
+              "IP_address": "10.0.56.6",
+              "Wildcard": "0.0.0.0"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Static_Routing":
+  [
+    {
+      "Destination_Network": "7.7.7.7",
+      "MaskLength": "32",
+      "NextHop": "10.0.76.7",
+      "VRF_Name": "VPN_In"
+    },
+    {
+      "Destination_Network": "7.7.7.7",
+      "MaskLength": "32",
+      "NextHop": "10.0.67.7",
+      "VRF_Name": "VPN_Out"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "Sysname": "P5",
+  "MPLS_Conf":
+  [
+    {
+      "LSR_ID": "5.5.5.5"
+    }
+  ],
+  "Interfaces":
+  [
+    {
+      "interfaceNameNumber": "g0/0/0",
+      "interfaceIP": "10.0.56.5",
+      "intMaskLength": "24",
+      "description": "--connected to PE6",
+      "MPLS_IntConf": "True",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "g0/0/1",
+      "interfaceIP": "10.0.35.5",
+      "intMaskLength": "24",
+      "description": "--connected to PE3",
+      "MPLS_IntConf": "True",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "g0/0/2",
+      "interfaceIP": "10.0.45.5",
+      "intMaskLength": "24",
+      "description": "--connected to PE4",
+      "MPLS_IntConf": "True",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "Loopback0",
+      "interfaceIP": "5.5.5.5",
+      "intMaskLength": "32",
+      "description": "--OSPF Router ID & MPLS-LDP LSR-ID",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    }
+  ],
+  "OSPF_Config":
+  [
+    {
+      "OSPF_ProcessID": "1",
+      "OSPF_RouterID": "5.5.5.5",
+      "OSPF_Areas":
+      [
+        {
+          "Area_Number": "0",
+          "Enabled_Networks":
+          [
+            {
+              "IP_address": "5.5.5.5",
+              "Wildcard": "0.0.0.0"
+            },
+            {
+              "IP_address": "10.0.35.5",
+              "Wildcard": "0.0.0.0"
+            },
+            {
+              "IP_address": "10.0.45.5",
+              "Wildcard": "0.0.0.0"
+            },
+            {
+              "IP_address": "10.0.56.5",
+              "Wildcard": "0.0.0.0"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

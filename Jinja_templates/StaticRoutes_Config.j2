@@ -1,0 +1,6 @@
+{% if config.Static_Routing is defined and config.Static_Routing != [] -%}
+{% for sRoute in config.Static_Routing -%}
+ip route-static {% if sRoute.VRF_Name is defined and sRoute.VRF_Name != "" -%} vpn-instance {{ sRoute.VRF_Name }} {% endif -%}
+{{ sRoute.Destination_Network }} {{ sRoute.MaskLength }} {{ sRoute.NextHop }}
+{% endfor -%}
+{% endif -%}

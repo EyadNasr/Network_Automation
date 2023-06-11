@@ -1,0 +1,138 @@
+{
+  "Sysname": "Spoke_PE4",
+  "VRFs":
+  [
+    {
+      "VRF_Name": "VPN",
+      "RD": "200:1",
+      "ERT": "200:1",
+      "IRT": "300:1"
+    }
+  ],
+  "MPLS_Conf":
+  [
+    {
+      "LSR_ID": "4.4.4.4"
+    }
+  ],
+  "Interfaces":
+  [
+    {
+      "interfaceNameNumber": "g0/0/0",
+      "interfaceIP": "10.0.45.4",
+      "intMaskLength": "24",
+      "description": "--connected to P5",
+      "MPLS_IntConf": "True",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "g0/0/1",
+      "interfaceIP": "10.0.24.4",
+      "intMaskLength": "24",
+      "description": "--connected to CE2 through 'VPN' VRF",
+      "MPLS_IntConf": "False",
+      "VRF_Name": "VPN"
+    },
+    {
+      "interfaceNameNumber": "Loopback0",
+      "interfaceIP": "4.4.4.4",
+      "intMaskLength": "32",
+      "description": "--OSPF Router-ID & MPLS-LDP LSR-ID & MP-BGP Router-ID",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "Loopback1",
+      "interfaceIP": "4.4.4.5",
+      "intMaskLength": "32",
+      "description": "--Source VPN EBGP interface and EBGP Router ID",
+      "MPLS_IntConf": "False",
+      "VRF_Name": "VPN"
+    }
+  ],
+  "BGP_Config":
+  [
+    {
+      "BGP_LocalAS": "123",
+      "CONFIG":
+      [
+        {
+          "BGP_RouterID": "4.4.4.4",
+          "Peers":
+          [
+            {
+              "BGP_PeerIP": "6.6.6.6",
+              "BGP_PeerAS": "123",
+              "BGP_MaxTTL": "",
+              "BGP_SourceInterface": "Loopback0",
+              "Allow_as_loop": "False",
+              "AF_Type": "vpnv4"
+            }
+          ],
+          "BGP_AdvertisedNetworks":
+          [
+            {
+              "NetworkIP": "",
+              "NetworkMaskLength": ""
+            }
+          ]
+        },
+        {
+          "VRF_Name": "VPN",
+          "BGP_RouterID": "4.4.4.5",
+          "Peers":
+          [
+            {
+              "BGP_PeerIP": "2.2.2.2",
+              "BGP_PeerAS": "200",
+              "BGP_MaxTTL": "2",
+              "BGP_SourceInterface": "Loopback1",
+              "Allow_as_loop": "False",
+              "AF_Type": ""
+            }
+          ],
+          "BGP_AdvertisedNetworks":
+          [
+            {
+              "NetworkIP": "",
+              "NetworkMaskLength": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+    "OSPF_Config":
+  [
+    {
+      "OSPF_ProcessID": "1",
+      "OSPF_RouterID": "4.4.4.4",
+      "OSPF_Areas":
+      [
+        {
+          "Area_Number": "0",
+          "Enabled_Networks":
+          [
+            {
+              "IP_address": "4.4.4.4",
+              "Wildcard": "0.0.0.0"
+            },
+            {
+              "IP_address": "10.0.45.4",
+              "Wildcard": "0.0.0.0"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Static_Routing":
+  [
+    {
+      "Destination_Network": "2.2.2.2",
+      "MaskLength": "32",
+      "NextHop": "10.0.24.2",
+      "VRF_Name": "VPN"
+    }
+  ]
+}

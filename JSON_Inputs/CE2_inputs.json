@@ -1,0 +1,73 @@
+{
+  "Sysname": "Spoke_CE2",
+  "Interfaces":
+  [
+    {
+      "interfaceNameNumber": "g0/0/0",
+      "interfaceIP": "10.0.24.2",
+      "intMaskLength": "24",
+      "description": "--connected to PE4 'VPN' VRF",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "Loopback0",
+      "interfaceIP": "2.2.2.2",
+      "intMaskLength": "32",
+      "description": "--Source EBGP interface and EBGP Router ID",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    },
+    {
+      "interfaceNameNumber": "Loopback1",
+      "interfaceIP": "172.16.0.1",
+      "intMaskLength": "24",
+      "description": "--External network advertised through BGP",
+      "MPLS_IntConf": "False",
+      "VRF_Name": ""
+    }
+  ],
+  "BGP_Config":
+  [
+    {
+      "BGP_LocalAS": "200",
+      "CONFIG":
+      [
+        {
+          "BGP_RouterID": "2.2.2.2",
+          "Peers":
+          [
+            {
+              "BGP_PeerIP": "4.4.4.5",
+              "BGP_PeerAS": "123",
+              "BGP_MaxTTL": "2",
+              "BGP_SourceInterface": "Loopback0",
+              "Allow_as_loop": "False",
+              "AF_Type": ""
+            }
+          ],
+          "BGP_AdvertisedNetworks":
+          [
+            {
+              "NetworkIP": "10.0.24.0",
+              "NetworkMaskLength": "24"
+            },
+            {
+              "NetworkIP": "172.16.0.0",
+              "NetworkMaskLength": "24"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Static_Routing":
+  [
+    {
+      "Destination_Network": "4.4.4.5",
+      "MaskLength": "32",
+      "NextHop": "10.0.24.4",
+      "VRF_Name": ""
+    }
+  ]
+}

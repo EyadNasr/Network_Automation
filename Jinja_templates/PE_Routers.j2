@@ -1,0 +1,9 @@
+sysname {{ config.Sysname }}
+{% include "VRF_Config.j2" -%}
+mpls lsr-id {{ config.MPLS_Conf[0].LSR_ID }}
+mpls
+mpls ldp
+{% include "Interface_config.j2" -%}
+{% include "BGP_Config.j2" -%}
+{% include "OSPF_Config.j2" -%}
+{% include "StaticRoutes_Config.j2" -%}
