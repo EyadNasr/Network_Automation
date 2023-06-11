@@ -2,7 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 import json, concurrent.futures
 from netmiko import Netmiko
 
-targets = [str(i) for i in range(1,2)]
+targets = [str(i) for i in range(1,8)]
 def mainCode(target):
     host = {"host": f"192.168.200.{target}", "username":"test123","password":"huawei","device_type":"huawei"}#,"global_delay_factor":0.1}
     env = Environment(loader=FileSystemLoader('Jinja_templates'))
@@ -19,19 +19,17 @@ def mainCode(target):
         for index, cmd in enumerate(commands_list):
             # print(index)
             if index < len(commands.split('\n'))-1:
-                shell.send_config_set(cmd,read_timeout=0.1, terminator=']', exit_config_mode=False, enter_config_mode=False)
+                tempo = shell.send_config_set(cmd,read_timeout=0.2, terminator=']', exit_config_mode=False, enter_config_mode=False)
             else:
-                shell.send_config_set(cmd,read_timeout=0.1, terminator=']', enter_config_mode=False)
+                tempo = shell.send_config_set(cmd,read_timeout=0.2, terminator=']', enter_config_mode=False)
         savetrial = shell.save_config('save ' + jsonfiles[int(target) - 1].split('_')[0] + '.cfg')
         if savetrial.endswith("overwrite? (y/n)[n]:"):
             save = shell.save_config('y',confirm=True, confirm_response="")
         else:
             save = ''
-        startup = shell.send_config_set('startup saved-configuration ' + jsonfiles[int(target) - 1].split('_')[0] + '.cfg\n', enter_config_mode=False, exit_config_mode=False)
-        print(shell.send_command("display current-configuration"), savetrial, save, startup, sep='\n')
-
-
-
+        startup = shell.send_config_set('startup saved-configuration ' + jsonfiles[int(target) - 1].split('_')[0] + '.cfg\n', enter_config_mode=False, exit_config_mode=False, terminator='>')
+        curr_conf = shell.send_command("display current-configuration")
+        print(savetrial, save, startup, curr_conf, sep='\n')
 
 num_threads = len(targets)# multiprocessing.cpu_count()
 
